@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from urllib.parse import quote_plus
 
@@ -25,44 +26,41 @@ st.set_page_config(
 
 @st.cache_resource
 def get_engine():
-    credentials = None
 
-    # 1. Try Streamlit native secrets
-    try:
-        if "mysql" in st.secrets:
+    # Production / Vercel
+    if os.getenv("MYSQL_HOST"):
+
+        host = os.environ["MYSQL_HOST"]
+        port = os.environ["MYSQL_PORT"]
+        database = os.environ["MYSQL_DATABASE"]
+        user = os.environ["MYSQL_USER"]
+        password = os.environ["MYSQL_PASSWORD"]
+
+    # Local development
+    else:
+
+        try:
             credentials = st.secrets["mysql"]
-    except Exception:
-        pass
+        except Exception:
+            local_secrets = Path(__file__).resolve().parent / ".streamlit" / "secrets.toml"
+            if local_secrets.exists():
+                import toml
+                credentials = toml.load(local_secrets)["mysql"]
+            else:
+                raise
 
-    # 2. Fallback to secrets.toml in script's local .streamlit folder
-    if not credentials:
-        local_secrets = Path(__file__).resolve().parent / ".streamlit" / "secrets.toml"
-        if local_secrets.exists():
-            import toml
-            credentials = toml.load(local_secrets).get("mysql")
+        host = credentials.get("host") or credentials.get("MYSQL_HOST")
+        port = credentials.get("port") or credentials.get("MYSQL_PORT", 3306)
+        database = credentials.get("database") or credentials.get("MYSQL_DATABASE")
+        user = credentials.get("user") or credentials.get("MYSQL_USER")
+        password = credentials.get("password") or credentials.get("MYSQL_PASSWORD")
 
-    # 3. Fallback to secrets.toml in current working directory .streamlit folder
-    if not credentials:
-        cwd_secrets = Path.cwd() / ".streamlit" / "secrets.toml"
-        if cwd_secrets.exists():
-            import toml
-            credentials = toml.load(cwd_secrets).get("mysql")
-
-    if not credentials:
-        st.error(
-            "❌ MySQL credentials not found. Please ensure `.streamlit/secrets.toml` exists "
-            "with a `[mysql]` section containing host, port, database, user, and password."
-        )
-        st.stop()
-
-    host = credentials["host"]
-    port = credentials["port"]
-    database = credentials["database"]
-    user = credentials["user"]
-    password = quote_plus(str(credentials["password"]))
+    password = quote_plus(str(password))
 
     engine = create_engine(
-        f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
+        f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}",
+        pool_pre_ping=True,
+        pool_recycle=240
     )
 
     return engine
