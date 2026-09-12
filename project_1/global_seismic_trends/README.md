@@ -1,5 +1,8 @@
 # Global Seismic Trends: Data-Driven Earthquake Insights
 
+## Live
+https://ds-projects-ivory.vercel.app/
+
 ## Overview
 
 **Global Seismic Trends** is an end-to-end Data Science project that analyzes global earthquake activity using data retrieved from the **USGS Earthquake API**.
