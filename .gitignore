@@ -1,0 +1,3 @@
+.streamlit/secrets.toml
+*.csv
+Project 1/Global Siesmic Trends/data/global_seismic_data_cleaned.csv
