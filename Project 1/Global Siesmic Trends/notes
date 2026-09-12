@@ -1,2 +1,3 @@
 The GeoJSON response does not expose all 26 of your requested fields at the same level. GeoJSON gives you fields like tsunami, sig, ids, sources, and types, while USGS’s CSV format additionally exposes depthError, magError, magNst, locationSource, and magSource.
 
+streamlit run app.py

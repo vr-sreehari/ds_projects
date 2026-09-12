@@ -4,4 +4,6 @@ requests
 matplotlib
 plotly
 streamlit
-
+sqlalchemy
+pymysql
+cryptography
