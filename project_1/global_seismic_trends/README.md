@@ -2,6 +2,7 @@
 
 ## Live
 https://ds-projects-ivory.vercel.app/
+alternate - https://dsprojects-dzh5j83j6ihozcttqm4urn.streamlit.app/
 
 ## Overview
 
