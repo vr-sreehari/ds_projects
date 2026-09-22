@@ -17,5 +17,3 @@ __pycache__/
 # OS files
 .DS_Store
 
-# Data
-*.csv
