@@ -526,6 +526,99 @@ if len(discount_corr_df) > 1:
 # MAIN ANALYSIS TABS
 # ============================================================
 
+# Sticky navigation styling for the analysis tabs
+st.markdown(
+    """
+    <style>
+    /* Ensure Streamlit header does not block clicks to elements beneath it */
+    header[data-testid="stHeader"] {
+        background-color: #ffffff !important;
+        pointer-events: none !important;
+    }
+
+    /* Keep header buttons (menu, deploy, collapse) clickable */
+    header[data-testid="stHeader"] button,
+    header[data-testid="stHeader"] a,
+    header[data-testid="stHeader"] [role="button"] {
+        pointer-events: auto !important;
+    }
+
+    /* Make Analysis Tabs Sticky below the header */
+    div[data-testid="stTabs"] [data-baseweb="tab-list"],
+    div[data-testid="stTabs"] [role="tablist"] {
+        position: sticky;
+        top: 3.75rem;
+        z-index: 999;
+        width: 100%;
+        pointer-events: auto !important;
+        background-color: #ffffff;
+        padding-top: 0.5rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    /* Ensure tab buttons are always clickable and display pointer cursor */
+    div[data-testid="stTabs"] button[data-baseweb="tab"] {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+    }
+
+    /* System Dark Mode */
+    @media (prefers-color-scheme: dark) {
+        header[data-testid="stHeader"] {
+            background-color: #0e1117 !important;
+        }
+
+        div[data-testid="stTabs"] [data-baseweb="tab-list"],
+        div[data-testid="stTabs"] [role="tablist"] {
+            background-color: #0e1117;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+        }
+    }
+
+    /* Streamlit Theme Toggle (Explicit Dark Mode) */
+    [data-testid="stApp"][style*="color-scheme: dark"] header[data-testid="stHeader"],
+    [data-theme="dark"] header[data-testid="stHeader"],
+    .stApp[data-theme="dark"] header[data-testid="stHeader"] {
+        background-color: #0e1117 !important;
+    }
+
+    [data-testid="stApp"][style*="color-scheme: dark"] div[data-testid="stTabs"] [data-baseweb="tab-list"],
+    [data-testid="stApp"][style*="color-scheme: dark"] div[data-testid="stTabs"] [role="tablist"],
+    [data-theme="dark"] div[data-testid="stTabs"] [data-baseweb="tab-list"],
+    [data-theme="dark"] div[data-testid="stTabs"] [role="tablist"],
+    .stApp[data-theme="dark"] div[data-testid="stTabs"] [data-baseweb="tab-list"],
+    .stApp[data-theme="dark"] div[data-testid="stTabs"] [role="tablist"] {
+        background-color: #0e1117 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    /* Streamlit Theme Toggle (Explicit Light Mode) */
+    [data-testid="stApp"][style*="color-scheme: light"] header[data-testid="stHeader"],
+    [data-theme="light"] header[data-testid="stHeader"],
+    .stApp[data-theme="light"] header[data-testid="stHeader"] {
+        background-color: #ffffff !important;
+    }
+
+    [data-testid="stApp"][style*="color-scheme: light"] div[data-testid="stTabs"] [data-baseweb="tab-list"],
+    [data-testid="stApp"][style*="color-scheme: light"] div[data-testid="stTabs"] [role="tablist"],
+    [data-theme="light"] div[data-testid="stTabs"] [data-baseweb="tab-list"],
+    [data-theme="light"] div[data-testid="stTabs"] [role="tablist"],
+    .stApp[data-theme="light"] div[data-testid="stTabs"] [data-baseweb="tab-list"],
+    .stApp[data-theme="light"] div[data-testid="stTabs"] [role="tablist"] {
+        background-color: #ffffff !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 overview_tab, customer_tab, restaurant_tab = st.tabs(
     [
         "📊 Executive Overview",
